@@ -14,7 +14,6 @@ public class UdpReceiver implements Runnable {
    public UdpReceiver (Controller controller){
        this.messageHandler = controller;
    }
-
     private void setupSocket(){
 
         try {
