@@ -9,6 +9,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Label;
 
 import java.awt.*;
 
@@ -29,12 +30,18 @@ public class Controller {
     @FXML
     Canvas droneCanvas;
 
+    @FXML
+    Label espIP;
+
+    @FXML
+    Label espPort;
+
 
     private UdpReceiver udpReceiver;
     private GraphicsContext graphicsContext;
     private double currentX;
     private double currentY;
-    private double speed = 10;
+    private double speed = 8;
 
     public void initialize(){
         this.graphicsContext = droneCanvas.getGraphicsContext2D();
@@ -60,6 +67,7 @@ public class Controller {
             udpReceiver.setReceiveMessages(true);
             new Thread(udpReceiver).start();
             toggleBtnDrone.setText("ON");
+
         }
     }
 
@@ -128,10 +136,18 @@ public class Controller {
             listViewVertices.getItems().add("Vertex {x=" + currentX + ", y= " + currentY + "}");
         }
     }
+
     private void clearCircle () {
         if (graphicsContext != null) {
             graphicsContext.clearRect(currentX - 30, currentY - 30, 40, 40);
         }
+    }
+
+    public void setEspIP (String espIP){
+        this.espIP.setText(espIP);
+    }
+    public void setEspPort (String espPort){
+        this.espPort.setText(espPort);
     }
 }
 

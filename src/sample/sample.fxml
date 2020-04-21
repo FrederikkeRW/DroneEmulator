@@ -25,13 +25,13 @@
             </children></AnchorPane>
         <AnchorPane layoutX="209.0" layoutY="-1.0" prefHeight="540.0" prefWidth="482.0" style="-fx-background-color: #E2E2E2;">
             <children>
-                <Canvas fx:id="droneCanvas" height="415.0" layoutX="25.0" layoutY="63.0" onMouseClicked="#mouseClickedOnCanvas" width="416.0" />
+                <Canvas fx:id="droneCanvas" height="428.0" layoutX="33.0" layoutY="56.0" onMouseClicked="#mouseClickedOnCanvas" width="416.0" />
                 <Label alignment="CENTER" contentDisplay="CENTER" layoutX="139.0" layoutY="28.0" text="DRONE EMULATOR" textFill="#619ed7">
                     <font>
                         <Font name="Helvetica Neue Bold" size="18.0" />
                     </font>
                 </Label>
-                <Button layoutX="405.0" layoutY="475.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="71.0" style="-fx-background-color: FEBFB6; -fx-background-radius: 40 40 40 40;" text="CLEAR" textFill="#3f5b8f">
+                <Button layoutX="410.0" layoutY="485.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="58.0" style="-fx-background-color: FEBFB6; -fx-background-radius: 40 40 40 40;" text="CLEAR" textFill="#3f5b8f">
                     <font>
                         <Font name="Helvetica Neue Bold" size="12.0" />
                     </font>
@@ -65,28 +65,27 @@
                         <Font name="Helvetica Neue Light" size="13.0" />
                     </font>
                 </ToggleButton>
-                <ToggleButton fx:id="toggleBtnBroadcast" layoutX="224.0" layoutY="492.0" mnemonicParsing="false" onAction="#toggleBtnBroadcast" prefHeight="42.0" prefWidth="58.0" style="-fx-background-color: #4073E7; -fx-background-radius: 20 20 20 20;" text="ON" textFill="WHITE">
+                <ToggleButton fx:id="toggleBtnBroadcast" layoutX="190.0" layoutY="492.0" mnemonicParsing="false" onAction="#toggleBtnBroadcast" prefHeight="42.0" prefWidth="90.0" style="-fx-background-color: #4073E7; -fx-background-radius: 20 20 20 20;" text="clear table" textFill="WHITE">
                     <font>
                         <Font name="Helvetica Neue Light" size="13.0" />
                     </font>
                 </ToggleButton>
-                <Label layoutX="30.0" layoutY="460.0" text="Drone Server port:">
+                <Label layoutX="30.0" layoutY="460.0" text="Listen on ESP ">
                     <font>
                         <Font size="11.0" />
                     </font></Label>
-                <Label layoutX="134.0" layoutY="461.0" text="127.0.0.1">
+                <Label id="esp_ip" fx:id="espIP" layoutX="123.0" layoutY="461.0" prefHeight="14.0" prefWidth="58.0">
                     <font>
                         <Font size="11.0" />
-                    </font></Label>
-                <Label layoutX="190.0" layoutY="461.0" text="7007">
+                    </font>
+                </Label>
+
+                <Label id="esp_port" fx:id="espPort" layoutX="190.0" layoutY="461.0" prefHeight="14.0" prefWidth="26.0">
                     <font>
                         <Font size="11.0" />
-                    </font></Label>
-                <Label layoutX="79.0" layoutY="506.0" text="Broadcast on port:">
-                    <font>
-                        <Font size="11.0" />
-                    </font></Label>
-                <Label layoutX="190.0" layoutY="506.0" text="7000">
+                    </font>
+                </Label>
+                <Label layoutX="79.0" layoutY="506.0">
                     <font>
                         <Font size="11.0" />
                     </font></Label>
