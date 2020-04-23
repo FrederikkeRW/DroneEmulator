@@ -1,44 +1,55 @@
 package sample;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketException;
+import java.net.*;
 
 public class UdpReceiver implements Runnable {
-    private int inPort = 7000;
-    private DatagramSocket socket = null;
+    private int inPort = 7007; //port im listening on
+    private int broadcastToPort = 4000; //port we are sending echo back to
+    private int broardcastFromPort = 7001;
+    private DatagramSocket reciveSocket = null;
+    private DatagramSocket broadcastSocket = null;
     private boolean receiveMessages = true;
+    private boolean sendEcho = false;
     private Controller messageHandler;
 
    public UdpReceiver (Controller controller){
        this.messageHandler = controller;
    }
+
+
     private void setupSocket(){
 
         try {
-            socket = new DatagramSocket(inPort);
+            reciveSocket = new DatagramSocket(inPort);
+            broadcastSocket = new DatagramSocket(broardcastFromPort, InetAddress.getLocalHost());
+            broadcastSocket.setBroadcast(true);
 
-        } catch (SocketException e) {
+        } catch (SocketException | UnknownHostException e) {
             e.printStackTrace();
         }
     }
 
+
+
     private Message receivePacket(){
         byte[] inBuf = new byte[256];
-        DatagramPacket packet = new DatagramPacket(inBuf, inBuf.length);
+        DatagramPacket recivePacket = new DatagramPacket(inBuf, inBuf.length);
         Message message = null;
         try {
 
-            socket.receive(packet);
-            message = new Message(packet.getData(), packet.getLength());
+            reciveSocket.receive(recivePacket);
+            message = new Message(recivePacket.getData(), recivePacket.getLength());
             System.out.println("received: "+ message);
             messageHandler.handleMessage(message);
-            messageHandler.setEspIP(packet.getAddress().getHostAddress());
-            messageHandler.setEspPort(String.valueOf(packet.getPort()));
+            //System.out.println("host address: "+recivePacket.getAddress().getHostAddress()+" port: "+String.valueOf(recivePacket.getPort()));
 
 
-            packet.getSocketAddress();
+            if(sendEcho) {
+                DatagramPacket broadcastPacket = new DatagramPacket(inBuf, inBuf.length, InetAddress.getByName("255.255.255.255"), broadcastToPort);
+                broadcastSocket.send(broadcastPacket);
+
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,13 +61,15 @@ public class UdpReceiver implements Runnable {
     public void run() {
 
         System.out.println("Stared UdpReceiver Thread");
-        if (socket == null){
-            setupSocket();
+        if (reciveSocket == null){
+           setupSocket();
         }
         while (receiveMessages){
             receivePacket();
         }
-        //socket.close();
+        reciveSocket.close();
+        reciveSocket = null;
+        broadcastSocket.close();
     }
 
     public boolean isReceiveMessages() {
@@ -66,6 +79,14 @@ public class UdpReceiver implements Runnable {
     public void setReceiveMessages(boolean receiveMessages) {
         this.receiveMessages = receiveMessages;
         //socket.close();
+    }
+
+    public boolean isSendEcho() {
+        return sendEcho;
+    }
+
+    public void setSendEcho(boolean sendEcho) {
+        this.sendEcho = sendEcho;
     }
 }
 

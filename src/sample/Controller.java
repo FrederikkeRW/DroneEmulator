@@ -36,6 +36,9 @@ public class Controller {
     @FXML
     Label espPort;
 
+    @FXML
+    ToggleButton toggleBtnEchoServer;
+
 
     private UdpReceiver udpReceiver;
     private GraphicsContext graphicsContext;
@@ -45,6 +48,12 @@ public class Controller {
 
     public void initialize(){
         this.graphicsContext = droneCanvas.getGraphicsContext2D();
+
+        if(udpReceiver.isSendEcho()) {
+            toggleBtnEchoServer.setText("ON");
+        } else{
+            toggleBtnEchoServer.setText("OFF");
+        }
     }
 
     public Controller() {
@@ -71,16 +80,34 @@ public class Controller {
         }
     }
 
-    public void toggleBtnBroadcast(ActionEvent actionEvent) {
-        System.out.println("Toggle Broadcast button");
+    public void toggleBtnEchoServer(ActionEvent actionEvent){
+        if(udpReceiver.isSendEcho()){
+            udpReceiver.setSendEcho(false);
+            toggleBtnEchoServer.setText("OFF");
+        } else {
+            udpReceiver.setSendEcho(true);
+            toggleBtnEchoServer.setText("ON");
+        }
+    }
+
+    public void clearTable(ActionEvent actionEvent) {
+        //System.out.println("Toggle Clear table button");
         inputLogTable.getItems().clear(); // clears table
     }
 
+    public void clearList (ActionEvent actionEvent){
+        listViewVertices.getItems().clear();
+    }
 
     public void handleMessage(Message message) {
         if (inputLogTable != null) {
             inputLogTable.getItems().add(0, message);
         }
+
+        if (espIP != null){
+            espIP.setText("bla bla");
+        }
+
         String command = message.getCommand();
         switch (command){
             case "init":
@@ -143,11 +170,5 @@ public class Controller {
         }
     }
 
-    public void setEspIP (String espIP){
-        this.espIP.setText(espIP);
-    }
-    public void setEspPort (String espPort){
-        this.espPort.setText(espPort);
-    }
 }
 
