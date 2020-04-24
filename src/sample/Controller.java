@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -54,11 +55,15 @@ public class Controller {
         } else{
             toggleBtnEchoServer.setText("OFF");
         }
+        /*
+        Now the canvas is initialized
+        Start udpReceiver thread
+         */
+        new Thread(udpReceiver).start();
     }
 
     public Controller() {
         udpReceiver = new UdpReceiver(this);
-        new Thread(udpReceiver).start();
     }
 
     public void toggleBtnDrone(ActionEvent actionEvent) {
@@ -105,8 +110,10 @@ public class Controller {
         }
 
         if (espIP != null){
-            espIP.setText("bla bla");
+            Platform.runLater(() ->  espIP.setText("bla bla"));
         }
+
+
 
         String command = message.getCommand();
         switch (command){
@@ -115,31 +122,36 @@ public class Controller {
                 String y = message.getParam2();
                 currentX = Double.parseDouble(x);
                 currentY = Double.parseDouble(y);
-                drawCircle();
+                //drawCircle();
+                Platform.runLater(() -> drawCircle());
                 break;
 
             case "moveup":
                 clearCircle();
                 currentY -= speed;
-                drawCircle();
+                //drawCircle();
+                Platform.runLater(() -> drawCircle());
                 break;
 
             case "movedown":
                 clearCircle();
                 currentY += speed;
-                drawCircle();
+                //drawCircle();
+                Platform.runLater(() -> drawCircle());
                 break;
 
             case "moveleft":
                 clearCircle();
                 currentX -= speed;
-                drawCircle();
+                //drawCircle();
+                Platform.runLater(() -> drawCircle());
                 break;
 
             case "moveright":
                 clearCircle();
                 currentX += speed;
-                drawCircle();
+                //drawCircle();
+                Platform.runLater(() -> drawCircle());
                 break;
         }
     }

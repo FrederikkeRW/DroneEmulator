@@ -56,7 +56,6 @@ public class UdpReceiver implements Runnable {
         }
         return message;
     }
-
     @Override
     public void run() {
 
